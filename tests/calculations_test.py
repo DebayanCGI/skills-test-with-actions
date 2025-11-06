@@ -4,6 +4,7 @@ import os
 
 # Installed Modules
 import pytest
+import math
 
 # Project Modules
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
@@ -34,6 +35,19 @@ def test_area_of_circle_zero_radius():
     assert result == 0
 
 
+def test_area_of_circle_negative_radius():
+    """Test with a negative radius should raise ValueError."""
+    with pytest.raises(ValueError, match="Radius cannot be negative"):
+        area_of_circle(-1)
+
+
+def test_area_of_circle_large_radius():
+    """Test with a large radius."""
+    radius = 1000
+    result = area_of_circle(radius)
+    assert abs(result - (math.pi * radius ** 2)) < 1e-5
+
+
 def test_get_nth_fibonacci_zero():
     """Test with n=0."""
     # Arrange
@@ -44,6 +58,12 @@ def test_get_nth_fibonacci_zero():
 
     # Assert
     assert result == 0
+
+
+def test_get_nth_fibonacci_negative():
+    """Test with negative n should raise ValueError."""
+    with pytest.raises(ValueError, match="n cannot be negative"):
+        get_nth_fibonacci(-5)
 
 
 def test_get_nth_fibonacci_one():
@@ -58,13 +78,28 @@ def test_get_nth_fibonacci_one():
     assert result == 1
 
 
-# def test_get_nth_fibonacci_ten():
-#     """Test with n=10."""
-#     # Arrange
-#     n = 10
+def test_get_nth_fibonacci_two():
+    """Test with n=2."""
+    assert get_nth_fibonacci(2) == 1
 
-#     # Act
-#     result = get_nth_fibonacci(n)
 
-#     # Assert
-#     assert result == 89
+def test_get_nth_fibonacci_five():
+    """Test with n=5."""
+    assert get_nth_fibonacci(5) == 5
+
+
+def test_get_nth_fibonacci_ten():
+    """Test with n=10."""
+    # Arrange
+    n = 10
+
+    # Act
+    result = get_nth_fibonacci(n)
+
+    # Assert
+    assert result == 55
+
+
+def test_get_nth_fibonacci_large():
+    """Test with a large n."""
+    assert get_nth_fibonacci(20) == 6765
